@@ -13,6 +13,11 @@
 		BBB324E119D3B98F005AC859 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BBB324E019D3B98F005AC859 /* Images.xcassets */; };
 		BBB324E419D3B98F005AC859 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB324E219D3B98F005AC859 /* LaunchScreen.xib */; };
 		BBB324F019D3B98F005AC859 /* TwitterClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324EF19D3B98F005AC859 /* TwitterClientTests.swift */; };
+		BBB324FA19D3BA35005AC859 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB324F919D3BA35005AC859 /* Social.framework */; };
+		BBB324FC19D3BA48005AC859 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBB324FB19D3BA48005AC859 /* Accounts.framework */; };
+		BBB324FE19D3C19D005AC859 /* StatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */; };
+		BBB3250019D3C383005AC859 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324FF19D3C383005AC859 /* Status.swift */; };
+		BBB3250219D3C669005AC859 /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB3250119D3C669005AC859 /* ComposerViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +41,11 @@
 		BBB324E919D3B98F005AC859 /* TwitterClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitterClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBB324EE19D3B98F005AC859 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB324EF19D3B98F005AC859 /* TwitterClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterClientTests.swift; sourceTree = "<group>"; };
+		BBB324F919D3BA35005AC859 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		BBB324FB19D3BA48005AC859 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusTableViewCell.swift; sourceTree = "<group>"; };
+		BBB324FF19D3C383005AC859 /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
+		BBB3250119D3C669005AC859 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB324FC19D3BA48005AC859 /* Accounts.framework in Frameworks */,
+				BBB324FA19D3BA35005AC859 /* Social.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +71,8 @@
 		BBB324CB19D3B98F005AC859 = {
 			isa = PBXGroup;
 			children = (
+				BBB324FB19D3BA48005AC859 /* Accounts.framework */,
+				BBB324F919D3BA35005AC859 /* Social.framework */,
 				BBB324D619D3B98F005AC859 /* TwitterClient */,
 				BBB324EC19D3B98F005AC859 /* TwitterClientTests */,
 				BBB324D519D3B98F005AC859 /* Products */,
@@ -79,7 +93,10 @@
 			children = (
 				BBB324D919D3B98F005AC859 /* AppDelegate.swift */,
 				BBB324DB19D3B98F005AC859 /* ViewController.swift */,
+				BBB324FF19D3C383005AC859 /* Status.swift */,
 				BBB324DD19D3B98F005AC859 /* Main.storyboard */,
+				BBB3250119D3C669005AC859 /* ComposerViewController.swift */,
+				BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */,
 				BBB324E019D3B98F005AC859 /* Images.xcassets */,
 				BBB324E219D3B98F005AC859 /* LaunchScreen.xib */,
 				BBB324D719D3B98F005AC859 /* Supporting Files */,
@@ -212,8 +229,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBB324FE19D3C19D005AC859 /* StatusTableViewCell.swift in Sources */,
+				BBB3250219D3C669005AC859 /* ComposerViewController.swift in Sources */,
 				BBB324DC19D3B98F005AC859 /* ViewController.swift in Sources */,
 				BBB324DA19D3B98F005AC859 /* AppDelegate.swift in Sources */,
+				BBB3250019D3C383005AC859 /* Status.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,6 +357,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TwitterClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -347,6 +368,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = TwitterClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
