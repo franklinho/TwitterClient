@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		BB3DB52619D49C5F00A6D07D /* compose.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB52519D49C5F00A6D07D /* compose.png */; };
 		BB3DB52B19D4D63F00A6D07D /* StatusDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3DB52A19D4D63F00A6D07D /* StatusDetailViewController.swift */; };
+		BB3DB52D19D4E69900A6D07D /* starGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB52C19D4E69900A6D07D /* starGrey.png */; };
+		BB3DB52F19D4E6D800A6D07D /* starYellow.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB52E19D4E6D800A6D07D /* starYellow.png */; };
+		BB3DB53119D4E6F800A6D07D /* retweet.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB53019D4E6F800A6D07D /* retweet.png */; };
+		BB3DB53319D4E70200A6D07D /* reply.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB53219D4E70200A6D07D /* reply.png */; };
 		BBB324DA19D3B98F005AC859 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324D919D3B98F005AC859 /* AppDelegate.swift */; };
 		BBB324DC19D3B98F005AC859 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324DB19D3B98F005AC859 /* ViewController.swift */; };
 		BBB324DF19D3B98F005AC859 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBB324DD19D3B98F005AC859 /* Main.storyboard */; };
@@ -38,6 +42,10 @@
 		BB3DB52119D499C500A6D07D /* TwitterClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TwitterClient-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB3DB52519D49C5F00A6D07D /* compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose.png; sourceTree = "<group>"; };
 		BB3DB52A19D4D63F00A6D07D /* StatusDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusDetailViewController.swift; sourceTree = "<group>"; };
+		BB3DB52C19D4E69900A6D07D /* starGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starGrey.png; sourceTree = "<group>"; };
+		BB3DB52E19D4E6D800A6D07D /* starYellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = starYellow.png; sourceTree = "<group>"; };
+		BB3DB53019D4E6F800A6D07D /* retweet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = retweet.png; sourceTree = "<group>"; };
+		BB3DB53219D4E70200A6D07D /* reply.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reply.png; sourceTree = "<group>"; };
 		BBB324D419D3B98F005AC859 /* TwitterClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBB324D819D3B98F005AC859 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BBB324D919D3B98F005AC859 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -81,6 +89,10 @@
 			isa = PBXGroup;
 			children = (
 				BB3DB52519D49C5F00A6D07D /* compose.png */,
+				BB3DB52C19D4E69900A6D07D /* starGrey.png */,
+				BB3DB52E19D4E6D800A6D07D /* starYellow.png */,
+				BB3DB53019D4E6F800A6D07D /* retweet.png */,
+				BB3DB53219D4E70200A6D07D /* reply.png */,
 				BBB324FB19D3BA48005AC859 /* Accounts.framework */,
 				BBB324F919D3BA35005AC859 /* Social.framework */,
 				BBB324D619D3B98F005AC859 /* TwitterClient */,
@@ -234,9 +246,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBB324DF19D3B98F005AC859 /* Main.storyboard in Resources */,
+				BB3DB52F19D4E6D800A6D07D /* starYellow.png in Resources */,
+				BB3DB53119D4E6F800A6D07D /* retweet.png in Resources */,
 				BBB324E419D3B98F005AC859 /* LaunchScreen.xib in Resources */,
 				BBB324E119D3B98F005AC859 /* Images.xcassets in Resources */,
+				BB3DB53319D4E70200A6D07D /* reply.png in Resources */,
 				BB3DB52619D49C5F00A6D07D /* compose.png in Resources */,
+				BB3DB52D19D4E69900A6D07D /* starGrey.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
