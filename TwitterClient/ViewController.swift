@@ -19,7 +19,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var urlSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
     
-    var statuses: [Status]?
+    var statuses: NSMutableArray = []
+    
+    // Indicates offset for infinite scrolling
+    var currentMaxStatusID:String?
     
     override func viewWillAppear(animated: Bool) {
         NSNotificationCenter.defaultCenter().addObserverForName(UIKeyboardWillShowNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
@@ -36,27 +39,32 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        
 
+        
+        // Styles navigation bar
         navigationController?.navigationBar.barTintColor = UIColor(red: 90/255.0, green: 200/255.0, blue: 250/255.0, alpha: 1.0)
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
         navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         navigationController?.navigationBar.backgroundColor = UIColor(red: 90/255.0, green: 200/255.0, blue: 250/255.0, alpha: 1.0)
         self.navigationItem.title = "Home"
 
-        
+        // Sets tableview delegate and datasource
         statusTableView.delegate = self
         statusTableView.dataSource = self
         
+        // Sets autolayout dynamic height for rows
         self.statusTableView.rowHeight = UITableViewAutomaticDimension
         
         
         // Add pull to refresh to the tableview
         self.refreshControl = UIRefreshControl()
         self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl.addTarget(self, action: "requestStatuses:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl.addTarget(self, action: "requestStatuses:maxStatusID:", forControlEvents: UIControlEvents.ValueChanged)
         self.statusTableView.addSubview(refreshControl)
         
-        self.requestStatuses(self)
+        // Ask for Statuses
+        self.requestStatuses(self, maxStatusID: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,35 +73,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        // Updates each cell with status labels
         let cell = tableView.dequeueReusableCellWithIdentifier("StatusCell") as StatusTableViewCell
-        let status = self.statuses![indexPath.row]
-        cell.statusLabel.text = status.text
-        cell.timeLabel.text = status.timeSinceTweet
-        cell.nameLabel.text = status.name
-        cell.userNameLabel.text = status.username
-        cell.profileImage.setImageWithURL(NSURL(string:status.profileImageURL))
-        cell.profileImage.alpha = 0
-        cell.profileImage.layer.cornerRadius = 10
-        cell.profileImage.clipsToBounds = true
-
-        // Fade in images
-        UIView.animateWithDuration(0.5,
-            delay: 0.0,
-            options: nil,
-            animations: {
-                cell.profileImage.alpha = 1.0
-                
-            },
-            completion: {
-                finished in
-        })
+        let status = self.statuses[indexPath.row] as Status
+        cell.updateLabelsWithStatus(status)
         
         return cell
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.statuses != nil {
-            return self.statuses!.count
+        if self.statuses.count > 0 {
+            return self.statuses.count
         } else {
             return 0
         }
@@ -107,59 +97,101 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
 //            })
 //    }
     
-    func requestStatuses(sender: AnyObject) {
-        let accountStore = ACAccountStore()
-        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
-            if success {
-                let accounts = accountStore.accountsWithAccountType(accountType)
-                let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
-                
-                let authRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
-                
-                authRequest.account = accounts[0] as ACAccount
-                
-                let request = authRequest.preparedURLRequest()
-                
-                let task = self.urlSession.dataTaskWithRequest(request,completionHandler: { (data, response, error) in
-                    if error != nil {
-                        NSLog("Error getting timeline")
-                    } else {
-                        let array = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSArray
-                        var statusArray:[Status] = Array()
-                        for object in array {
-                            let dictionary = object as NSDictionary
-                            statusArray.append(Status(dictionary: dictionary))
-                        }
-                        self.refreshControl.endRefreshing()
-                        dispatch_async(dispatch_get_main_queue(), {
-                            self.statuses = statusArray
-
-                            self.statusTableView.reloadData()
-                            
-                        })
-                        //                        NSLog("Got dictionary: \(array)")
-                    }
-                })
-                task.resume()
-                
-                NSLog("Accounts: \(accounts)")
-            } else {
-                NSLog("Error: \(error)")
-            }
+    func requestStatuses(sender: AnyObject, maxStatusID: String?) {
+//        let accountStore = ACAccountStore()
+//        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+//        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
+//            if success {
+//                let accounts = accountStore.accountsWithAccountType(accountType)
+//                let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
+//                
+//                let authRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
+//                
+//                
+//                if accounts.count > 0 {
+//                    authRequest.account = accounts[0] as ACAccount
+//                    
+//                    let request = authRequest.preparedURLRequest()
+//                    
+//                    let task = self.urlSession.dataTaskWithRequest(request,completionHandler: { (data, response, error) in
+//                        if error != nil {
+//                            NSLog("Error getting timeline")
+//                        } else {
+//                            let array = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as [NSDictionary]
+//                            var statusArray:[Status] = Status.statusesWithArray(array)
+//                            self.refreshControl.endRefreshing()
+//                            dispatch_async(dispatch_get_main_queue(), {
+//                                self.statuses = statusArray
+//                                
+//                                self.statusTableView.reloadData()
+//                                
+//                            })
+//                            //                        NSLog("Got dictionary: \(array)")
+//                        }
+//                    })
+//                    task.resume()
+//                }
+//                
+//                
+//                
+//                NSLog("Accounts: \(accounts)")
+//            } else {
+//                NSLog("Error: \(error)")
+//            }
+//        }
+//       
+        var requestParams = ["count":"50"]
+        if maxStatusID == nil {
+            self.currentMaxStatusID = nil
+            self.statuses = []
+        } else {
+            requestParams["max_id"] = maxStatusID
         }
+        
+        
+        TwitterClient.sharedInstance.homeTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
+            dispatch_async(dispatch_get_main_queue(),{
+                self.statuses.addObjectsFromArray(statuses!)
+                println("Statuses: \(self.statuses)")
+                println("Last Status ID: \((self.statuses[self.statuses.count-1] as Status).statusID)")
+                self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
+                self.refreshControl.endRefreshing()
+                self.statusTableView.reloadData()
+            })
+            
+        })
 
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "StatusDetailSegue") {
+            // Pass status object to statusDetailViewControlle
             var statusDetailController : StatusDetailViewController = segue.destinationViewController as StatusDetailViewController
             var statusIndex = statusTableView!.indexPathForSelectedRow()?.row
-            statusDetailController.status = self.statuses![statusIndex!] as Status
+            statusDetailController.status = self.statuses[statusIndex!] as Status
 
         }
     }
     
+    
+    @IBAction func logOutButtonPressed(sender: AnyObject) {
+        User.currentUser?.logout()
+    }
+    
+    // Implements scrolling. Checks if current position of tableview is at the contentHeight position. If so, add businesses to tableView.
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        
+        var actualPosition :CGFloat = scrollView.contentOffset.y
+        var contentHeight : CGFloat = scrollView.contentSize.height - 550
+        
+        println("Actual Position: \(actualPosition), Content Height: \(contentHeight)")
+        if (actualPosition >= contentHeight) {
+            requestStatuses(self, maxStatusID: self.currentMaxStatusID)
+            self.statusTableView.reloadData()
+        }
+        
+    }
 
 
 }

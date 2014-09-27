@@ -17,20 +17,35 @@ class StatusDetailViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     
+    @IBOutlet weak var favoritesCountLabel: UILabel!
+    @IBOutlet weak var retweetCountLabel: UILabel!
+    
+    @IBOutlet weak var favoriteButton: UIButton!
+    @IBOutlet weak var retweetButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        
+        // Assigns status variables to detailViewController Labels
         self.timeStampLabel.text = status.timeStamp as String
         self.statusLabel.text = status.text
         self.userNameLabel.text = status.username
         self.nameLabel.text = status.name
         self.profileImageURL = status.profileImageURL
+        self.retweetCountLabel.text = String(status.retweetCount)
+        self.favoritesCountLabel.text = String(status.favoriteCount)
+        self.favoriteButton.selected = status.favorited ? true:false
+        self.retweetButton.selected = status.retweeted ? true: false
         
+        
+        // Loads and fades image in
         self.profileImageView.setImageWithURL(NSURL(string:self.profileImageURL))
         self.profileImageView.alpha = 0
         self.profileImageView.layer.cornerRadius = 10
         self.profileImageView.clipsToBounds = true
+        
+        
         
         // Fade in images
         UIView.animateWithDuration(0.5,
@@ -43,6 +58,8 @@ class StatusDetailViewController: UIViewController {
             completion: {
                 finished in
         })
+        
+        
         
     }
 

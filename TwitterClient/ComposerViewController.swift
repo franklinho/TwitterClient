@@ -24,13 +24,13 @@ class ComposerViewController: UIViewController,UITextViewDelegate {
 
 
         
-
+        // Notification for when keyboard size is changed
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillChange:", name: UIKeyboardWillChangeFrameNotification, object: nil)
         
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardWillChange:", name: UIKeyboardWillShowNotification, object: nil)
-        
-        
+        // Set compose view delegate to self
         self.composerTextView.delegate = self
+        
+        // Check how many characters are in the textfield and update character count label
         self.checkCharacters()
         
         
@@ -51,12 +51,14 @@ class ComposerViewController: UIViewController,UITextViewDelegate {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    // When text is changed, update character count label
     func textViewDidChange(textView: UITextView) {
         self.checkCharacters()
     }
     
     func keyBoardWillChange(notification: NSNotification) {
+        // Adjusts size of text view to scroll when keyboard is up
         var keyBoardRect = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as NSValue).CGRectValue()
         self.view.convertRect(keyBoardRect, fromView: nil)
         
@@ -64,16 +66,20 @@ class ComposerViewController: UIViewController,UITextViewDelegate {
     }
     
     func checkCharacters(){
+        // Looks at textview character count
         self.characterCount = countElements(composerTextView.text)
+        // Displays characters left from 140
         var remainingCharacters = 140-self.characterCount
         self.characterCountLabel.text = "\(remainingCharacters)"
         if remainingCharacters < 0 {
             self.characterCountLabel.textColor = UIColor.redColor()
         } else {
+            // If negative, make label red
             self.characterCountLabel.textColor = UIColor(red: 153/255.0, green: 153/255.0, blue: 153/255.0, alpha: 1.0)
         }
     }
-
+    
+    // Dismiss composeview
     @IBAction func cancelButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
         self.view.endEditing(true)

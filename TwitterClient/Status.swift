@@ -13,17 +13,20 @@ class Status: NSObject {
     var profileImageURL: NSString
     var username: NSString
     var name: NSString
-//    var favorited: Bool
-//    var favoriteCount: Int
-//    var retweeted: Bool
-//    var retweetCount: Int
+    var favorited: Bool
+    var favoriteCount: Int
+    var retweeted: Bool
+    var retweetCount: Int
     var timeSinceTweet: String
     var timeStamp: String
+    var statusID: String
     
     
     init(dictionary: NSDictionary) {
         self.text = dictionary["text"] as NSString
-
+        
+        self.statusID = dictionary["id_str"] as String
+        
         var user = dictionary["user"] as NSDictionary
         self.name = user["name"] as NSString
         var screenName = user["screen_name"] as NSString
@@ -57,5 +60,24 @@ class Status: NSObject {
         timeStampDateFormatter.dateFormat = "MM/dd/yy, HH:mm aa"
         self.timeStamp = timeStampDateFormatter.stringFromDate(createdTimeStamp)
         
+        var favoritedValue = dictionary["favorited"] as Int
+        self.favorited = favoritedValue == 0 ? false:true
+        
+        self.favoriteCount = dictionary["favorite_count"] as Int
+        
+        var retweetedValue = dictionary["retweeted"] as Int
+        self.retweeted = retweetedValue == 0 ? false:true
+        
+        self.retweetCount = dictionary["retweet_count"] as Int
+        
+    }
+    
+    class func statusesWithArray(array: [NSDictionary]) -> [Status] {
+        var statuses = [Status]()
+        
+        for dictionary in array{
+            statuses.append(Status(dictionary: dictionary))
+        }
+        return statuses
     }
 }
