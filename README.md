@@ -17,4 +17,4 @@ Twitter Client For Codepath Week 3
   * :white_check_mark: Optional: Replies should be prefixed with the username and the reply_id should be set when posting the tweet,
   * :white_check_mark: Optional: User can load more tweets once they reach the bottom of the feed using infinite loading similar to the actual Twitter client.
 
-
+[![General Functionality](https://github.com/franklinho/TwitterClient/blob/master/TwitterClient.gif)]
