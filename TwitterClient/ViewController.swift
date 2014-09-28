@@ -11,7 +11,7 @@ import Accounts
 import Social
 
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ComposerViewControllerDelegate {
     @IBOutlet weak var statusTableView: UITableView!
     
     // Pull to refresh
@@ -89,58 +89,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
 
-//    @IBAction func didTapNew(sender: AnyObject) {
-//        let composer = ComposerViewController(nibName: nil, bundle: nil)
-//        
-//        self.navigationController?.presentViewController(composer, animated: true, completion: {
-//            
-//            })
-//    }
     
     func requestStatuses(sender: AnyObject, maxStatusID: String?) {
-//        let accountStore = ACAccountStore()
-//        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
-//        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
-//            if success {
-//                let accounts = accountStore.accountsWithAccountType(accountType)
-//                let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
-//                
-//                let authRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
-//                
-//                
-//                if accounts.count > 0 {
-//                    authRequest.account = accounts[0] as ACAccount
-//                    
-//                    let request = authRequest.preparedURLRequest()
-//                    
-//                    let task = self.urlSession.dataTaskWithRequest(request,completionHandler: { (data, response, error) in
-//                        if error != nil {
-//                            NSLog("Error getting timeline")
-//                        } else {
-//                            let array = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as [NSDictionary]
-//                            var statusArray:[Status] = Status.statusesWithArray(array)
-//                            self.refreshControl.endRefreshing()
-//                            dispatch_async(dispatch_get_main_queue(), {
-//                                self.statuses = statusArray
-//                                
-//                                self.statusTableView.reloadData()
-//                                
-//                            })
-//                            //                        NSLog("Got dictionary: \(array)")
-//                        }
-//                    })
-//                    task.resume()
-//                }
-//                
-//                
-//                
-//                NSLog("Accounts: \(accounts)")
-//            } else {
-//                NSLog("Error: \(error)")
-//            }
-//        }
-//       
-        var requestParams = ["count":"50"]
+
+        var requestParams = ["count":"20"]
         if maxStatusID == nil {
             self.currentMaxStatusID = nil
             self.statuses = []
@@ -148,7 +100,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             requestParams["max_id"] = maxStatusID
         }
         
-        
+        // Get home timeline tweets
         TwitterClient.sharedInstance.homeTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
             dispatch_async(dispatch_get_main_queue(),{
                 self.statuses.addObjectsFromArray(statuses!)
@@ -160,9 +112,51 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             })
             
         })
-
+        //        let accountStore = ACAccountStore()
+        //        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
+        //        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
+        //            if success {
+        //                let accounts = accountStore.accountsWithAccountType(accountType)
+        //                let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
+        //
+        //                let authRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
+        //
+        //
+        //                if accounts.count > 0 {
+        //                    authRequest.account = accounts[0] as ACAccount
+        //
+        //                    let request = authRequest.preparedURLRequest()
+        //
+        //                    let task = self.urlSession.dataTaskWithRequest(request,completionHandler: { (data, response, error) in
+        //                        if error != nil {
+        //                            NSLog("Error getting timeline")
+        //                        } else {
+        //                            let array = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as [NSDictionary]
+        //                            var statusArray:[Status] = Status.statusesWithArray(array)
+        //                            self.refreshControl.endRefreshing()
+        //                            dispatch_async(dispatch_get_main_queue(), {
+        //                                self.statuses = statusArray
+        //
+        //                                self.statusTableView.reloadData()
+        //
+        //                            })
+        //                            //                        NSLog("Got dictionary: \(array)")
+        //                        }
+        //                    })
+        //                    task.resume()
+        //                }
+        //                
+        //                
+        //                
+        //                NSLog("Accounts: \(accounts)")
+        //            } else {
+        //                NSLog("Error: \(error)")
+        //            }
+        //        }
+        //
     }
     
+    // Passes status data to statusDetailViewController
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "StatusDetailSegue") {
             // Pass status object to statusDetailViewControlle
@@ -173,7 +167,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
     }
     
-    
+    // Logs user out
     @IBAction func logOutButtonPressed(sender: AnyObject) {
         User.currentUser?.logout()
     }
@@ -191,6 +185,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             self.statusTableView.reloadData()
         }
         
+    }
+    
+    func didFinishComposingStatus(statusText: String) {
+        println("Composition complete: \(statusText)")
     }
 
 

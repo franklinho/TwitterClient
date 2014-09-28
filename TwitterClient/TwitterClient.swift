@@ -21,6 +21,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     var urlSession = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
     var loginCompletion: ((user: User?, error: NSError?) -> ())?
     
+    // Create singleton Twitter Client
     class var sharedInstance : TwitterClient {
         struct Static {
             static let instance =  TwitterClient(baseURL: twitterBaseURL, consumerKey: twitterConsumerKey, consumerSecret: twitterConsumerSecret)
@@ -28,6 +29,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         return Static.instance
     }
     
+    // Pulls home timeline statuses
     func homeTimelineWithParams(params: NSDictionary?, completion: (statuses:[Status]?, error: NSError?) -> ()) {
         
         
@@ -42,6 +44,47 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         })
     }
     
+    // Posts Tweet, takes replyID argument
+    func updateStatus(statusText: String, replyID: String?){
+        var params = ["status":statusText]
+        if replyID != nil {
+            params["in_reply_to_status_id"] = replyID!
+        }
+        POST("1.1/statuses/update.json", parameters: ["status":statusText], success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            println("Tweet Posted: \(statusText)")
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Failed to post tweet")
+        })
+    }
+    
+    //Favorites Status
+    func favoriteStatus(statusID: String){
+        POST("1.1/favorites/create.json", parameters: ["id":statusID], success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                println("Favorited Tweet: \(statusID)")
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Failed to favorite tweet")
+            })
+    }
+    
+    //Unfavorites Status
+    func unfavoriteStatus(statusID: String){
+        POST("1.1/favorites/destroy.json", parameters: ["id":statusID], success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            println("Unfavorited Tweet: \(statusID)")
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Failed to unfavorite tweet")
+        })
+    }
+    
+    // Retweeets a status
+    func retweetStatus(statusID: String) {
+        POST("1.1/statuses/retweet/\(statusID).json", parameters: ["id":statusID], success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            println("Retweeted Tweet: \(statusID)")
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Failed to retweet tweet: \(error)")
+        })
+    }
+    
+    // Logs user in. Gets Oauth token.
     func loginWithCompletion(completion: (user: User?, error: NSError?) -> ()) {
         loginCompletion = completion
         
@@ -59,6 +102,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         
     }
     
+    // Checks if app is opened with a url and gets request token.
     func openURL(url: NSURL) {
         fetchAccessTokenWithPath("oauth/access_token", method: "POST", requestToken: BDBOAuthToken(queryString: url.query), success: { (accessToken: BDBOAuthToken!) -> Void in
             println("Got the access token!")
@@ -85,51 +129,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
     }
     
     
-//    func requestHomeTimeLine() -> [Status] {
-//        var statusArray: [Status] = []
-//        
-//        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
-//            if success {
-//                let accounts = accountStore.accountsWithAccountType(accountType)
-//                let url = NSURL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")
-//                
-//                let authRequest = SLRequest(forServiceType: SLServiceTypeTwitter, requestMethod: .GET, URL: url, parameters: nil)
-//                
-//                
-//                if accounts.count > 0 {
-//                    authRequest.account = accounts[0] as ACAccount
-//                    
-//                    let request = authRequest.preparedURLRequest()
-//                    
-//                    let task = self.urlSession.dataTaskWithRequest(request,completionHandler: { (data, response, error) in
-//                        if error != nil {
-//                            NSLog("Error getting timeline")
-//                        } else {
-//                            let array = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as NSArray
-//                            
-//                            println("Object: \(array)")
-//                            for object in array {
-//                                let dictionary = object as NSDictionary
-//
-//                                
-//                                statusArray.append(Status(dictionary: dictionary))
-//                            }
-//                        }
-//                    })
-//                    task.resume()
-//                    
-//                }
-//                
-//                
-//                
-//                NSLog("Accounts: \(accounts)")
-//            } else {
-//                NSLog("Error: \(error)")
-//            }
-//        }
-//        
-//    }
-    
+
 }
 
 

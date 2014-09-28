@@ -22,6 +22,10 @@ class StatusDetailViewController: UIViewController {
     
     @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var retweetButton: UIButton!
+    
+    var currentFavoritesCount : Int!
+    var currentRetweetCount: Int!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,6 +41,8 @@ class StatusDetailViewController: UIViewController {
         self.favoritesCountLabel.text = String(status.favoriteCount)
         self.favoriteButton.selected = status.favorited ? true:false
         self.retweetButton.selected = status.retweeted ? true: false
+        self.currentFavoritesCount = status.favoriteCount
+        self.currentRetweetCount = status.retweetCount
         
         
         // Loads and fades image in
@@ -68,15 +74,40 @@ class StatusDetailViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func favoriteButtonPressed(sender: AnyObject) {
+        if self.favoriteButton.selected == false {
+            self.status.favorite()
+            self.favoriteButton.selected = true
+            self.currentFavoritesCount = self.currentFavoritesCount+1
+            self.favoritesCountLabel.text = String(self.currentFavoritesCount)
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue!, sender: AnyObject!) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        } else {
+            self.status.unfavorite()
+            self.favoriteButton.selected = false
+            self.currentFavoritesCount = self.currentFavoritesCount-1
+            self.favoritesCountLabel.text = String(self.currentFavoritesCount)
+        }
+        
+        
     }
-    */
+    @IBAction func retweetButtonPressed(sender: AnyObject) {
+        if self.retweetButton.selected == false {
+            self.status.retweet()
+            self.retweetButton.selected = true
+            self.currentRetweetCount = self.currentRetweetCount+1
+            self.retweetCountLabel.text = String(self.currentRetweetCount)
+        }
+    }
+
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        // Passes filter data from StatusDetailViewController to ComposerViewController
+        if (segue.identifier == "ReplyComposeSegue") {
+            var composeViewController : ComposerViewController = segue.destinationViewController as ComposerViewController
+            composeViewController.replyId = self.status.statusID
+            composeViewController.replyUsername = self.status.username
+            
+        }
+    }
 
 }

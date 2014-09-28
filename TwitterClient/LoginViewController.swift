@@ -33,6 +33,8 @@ class LoginViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    // Send user to main tweet view when logged in.
     @IBAction func onLogin(sender: AnyObject) {
         TwitterClient.sharedInstance.loginWithCompletion() {
             (user: User?, error: NSError?) in

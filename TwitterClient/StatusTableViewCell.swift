@@ -28,6 +28,7 @@ class StatusTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    // Quickly updates statusTableViewCell with data from status
     func updateLabelsWithStatus(status:Status) {
         self.statusLabel.text = status.text
         self.timeLabel.text = status.timeSinceTweet

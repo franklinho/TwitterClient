@@ -72,6 +72,7 @@ class Status: NSObject {
         
     }
     
+    // Creates status array from dictionary
     class func statusesWithArray(array: [NSDictionary]) -> [Status] {
         var statuses = [Status]()
         
@@ -79,5 +80,20 @@ class Status: NSObject {
             statuses.append(Status(dictionary: dictionary))
         }
         return statuses
+    }
+    
+    // Favorites this tweet
+    func favorite(){
+        TwitterClient.sharedInstance.favoriteStatus(self.statusID)
+    }
+    
+    // Unfavorites this tweet
+    func unfavorite(){
+        TwitterClient.sharedInstance.unfavoriteStatus(self.statusID)
+    }
+    
+    // Retweets this tweet
+    func retweet() {
+        TwitterClient.sharedInstance.retweetStatus(self.statusID)
     }
 }

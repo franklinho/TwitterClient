@@ -28,6 +28,7 @@ class User: NSObject {
         tagline = dictionary["description"] as? String
     }
     
+    // Logs user out.
     func logout(){
         User.currentUser = nil
         TwitterClient.sharedInstance.requestSerializer.removeAccessToken()
@@ -35,7 +36,7 @@ class User: NSObject {
         
     }
 
-    
+    // Creates singleton user object.
     class var currentUser: User? {
         get {
             if _currentUser == nil {
