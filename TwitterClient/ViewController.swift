@@ -103,12 +103,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Get home timeline tweets
         TwitterClient.sharedInstance.homeTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
             dispatch_async(dispatch_get_main_queue(),{
-                self.statuses.addObjectsFromArray(statuses!)
-                println("Statuses: \(self.statuses)")
-                println("Last Status ID: \((self.statuses[self.statuses.count-1] as Status).statusID)")
-                self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
-                self.refreshControl.endRefreshing()
-                self.statusTableView.reloadData()
+                if (statuses != nil) {
+                    self.statuses.addObjectsFromArray(statuses!)
+                    println("Statuses: \(self.statuses)")
+                    println("Last Status ID: \((self.statuses[self.statuses.count-1] as Status).statusID)")
+                    self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
+                    self.refreshControl.endRefreshing()
+                    self.statusTableView.reloadData()
+                }
+                
             })
             
         })
@@ -163,7 +166,15 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             var statusDetailController : StatusDetailViewController = segue.destinationViewController as StatusDetailViewController
             var statusIndex = statusTableView!.indexPathForSelectedRow()?.row
             statusDetailController.status = self.statuses[statusIndex!] as Status
-
+        } else if (segue.identifier == "profileSegue") {
+            var point : CGPoint = sender!.locationInView(self.statusTableView)
+            var indexPath : NSIndexPath = self.statusTableView.indexPathForRowAtPoint(point)!
+            println("IndexPath: \(indexPath)")
+//
+            var profileController: ProfileViewController = segue.destinationViewController as ProfileViewController
+            var statusIndex = indexPath.row
+            profileController.userName = (self.statuses[statusIndex] as Status).screenName
+//
         }
     }
     

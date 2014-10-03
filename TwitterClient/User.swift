@@ -19,13 +19,22 @@ class User: NSObject {
     var profileImageURL: String?
     var tagline: String?
     var dictionary: NSDictionary
+    var tweetCount: Int
+    var followingCount: Int
+    var followersCount: Int
+    var profileBackgroundURL: String
     
     init(dictionary: NSDictionary) {
         self.dictionary = dictionary
+        println("Dictionary: \(dictionary)")
         name = dictionary["name"] as? String
         screenname = dictionary["screen_name"] as? String
         profileImageURL = dictionary["profile_image_url"] as? String
         tagline = dictionary["description"] as? String
+        followersCount = dictionary["followers_count"] as Int
+        followingCount = dictionary["friends_count"] as Int
+        tweetCount = dictionary["statuses_count"] as Int
+        profileBackgroundURL = dictionary["profile_background_image_url"] as String
     }
     
     // Logs user out.

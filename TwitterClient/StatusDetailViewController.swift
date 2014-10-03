@@ -25,6 +25,7 @@ class StatusDetailViewController: UIViewController {
     
     var currentFavoritesCount : Int!
     var currentRetweetCount: Int!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,6 +108,9 @@ class StatusDetailViewController: UIViewController {
             composeViewController.replyId = self.status.statusID
             composeViewController.replyUsername = self.status.username
             
+        } else if (segue.identifier == "profileSegue") {
+            var profileController: ProfileViewController = segue.destinationViewController as ProfileViewController
+            profileController.userName = self.status.screenName
         }
     }
 

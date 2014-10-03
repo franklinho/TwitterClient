@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB01288719DE28CC00321567 /* HamburgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01288619DE28CC00321567 /* HamburgerViewController.swift */; };
 		BB3DB52619D49C5F00A6D07D /* compose.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB52519D49C5F00A6D07D /* compose.png */; };
 		BB3DB52B19D4D63F00A6D07D /* StatusDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3DB52A19D4D63F00A6D07D /* StatusDetailViewController.swift */; };
 		BB3DB52D19D4E69900A6D07D /* starGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = BB3DB52C19D4E69900A6D07D /* starGrey.png */; };
@@ -26,6 +27,7 @@
 		BBB324FE19D3C19D005AC859 /* StatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */; };
 		BBB3250019D3C383005AC859 /* Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB324FF19D3C383005AC859 /* Status.swift */; };
 		BBB3250219D3C669005AC859 /* ComposerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBB3250119D3C669005AC859 /* ComposerViewController.swift */; };
+		BBBE228219DB2BFA0069DD82 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBE228119DB2BFA0069DD82 /* ProfileViewController.swift */; };
 		BBEB3A0E19D632FB001527C5 /* TwitterClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB3A0D19D632FB001527C5 /* TwitterClient.swift */; };
 		BBEB3A1019D635BD001527C5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBEB3A0F19D635BD001527C5 /* LoginViewController.swift */; };
 		DAF496C313F04082AF0D5360 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 10C3900E36C34FB59E91FCDC /* libPods.a */; };
@@ -43,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		10C3900E36C34FB59E91FCDC /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB01288619DE28CC00321567 /* HamburgerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamburgerViewController.swift; sourceTree = "<group>"; };
 		BB3DB52119D499C500A6D07D /* TwitterClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TwitterClient-Bridging-Header.h"; sourceTree = "<group>"; };
 		BB3DB52519D49C5F00A6D07D /* compose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = compose.png; path = ../compose.png; sourceTree = "<group>"; };
 		BB3DB52A19D4D63F00A6D07D /* StatusDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusDetailViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +70,7 @@
 		BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusTableViewCell.swift; sourceTree = "<group>"; };
 		BBB324FF19D3C383005AC859 /* Status.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Status.swift; sourceTree = "<group>"; };
 		BBB3250119D3C669005AC859 /* ComposerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposerViewController.swift; sourceTree = "<group>"; };
+		BBBE228119DB2BFA0069DD82 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		BBEB3A0D19D632FB001527C5 /* TwitterClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterClient.swift; sourceTree = "<group>"; };
 		BBEB3A0F19D635BD001527C5 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EF5FADA942644657B3D52989 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 				BBB324DB19D3B98F005AC859 /* ViewController.swift */,
 				BBEB3A0F19D635BD001527C5 /* LoginViewController.swift */,
 				BBB324DD19D3B98F005AC859 /* Main.storyboard */,
+				BBBE228119DB2BFA0069DD82 /* ProfileViewController.swift */,
+				BB01288619DE28CC00321567 /* HamburgerViewController.swift */,
 				BBB3250119D3C669005AC859 /* ComposerViewController.swift */,
 				BBB324FD19D3C19D005AC859 /* StatusTableViewCell.swift */,
 				BBB324E019D3B98F005AC859 /* Images.xcassets */,
@@ -342,12 +348,14 @@
 			files = (
 				BB3DB52B19D4D63F00A6D07D /* StatusDetailViewController.swift in Sources */,
 				BBB324FE19D3C19D005AC859 /* StatusTableViewCell.swift in Sources */,
+				BBBE228219DB2BFA0069DD82 /* ProfileViewController.swift in Sources */,
 				BBB3250219D3C669005AC859 /* ComposerViewController.swift in Sources */,
 				BBB324DC19D3B98F005AC859 /* ViewController.swift in Sources */,
 				BBEB3A1019D635BD001527C5 /* LoginViewController.swift in Sources */,
 				BB97F12419D7570000DF6810 /* User.swift in Sources */,
 				BBEB3A0E19D632FB001527C5 /* TwitterClient.swift in Sources */,
 				BBB324DA19D3B98F005AC859 /* AppDelegate.swift in Sources */,
+				BB01288719DE28CC00321567 /* HamburgerViewController.swift in Sources */,
 				BBB3250019D3C383005AC859 /* Status.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

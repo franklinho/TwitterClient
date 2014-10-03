@@ -39,10 +39,40 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             completion(statuses: statuses, error: nil)
         
         }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-            println("Error getting home timeline")
+            println("Error getting home timeline: \(error)")
             completion(statuses: nil, error: error)
         })
     }
+    
+    // Pulls user details
+    func getUser(userName: String, completion: (user:User?, error: NSError?) -> ()) {
+        
+        
+        GET("1.1/users/show.json", parameters: ["screen_name":userName], success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            var user = User(dictionary: response as NSDictionary)
+            completion(user: user, error: nil)
+            
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Error getting user")
+                completion(user: nil, error: error)
+        })
+    }
+    
+    // Pulls user timeline statuses
+    func userTimeLineWithParams(params: NSDictionary?, completion: (statuses:[Status]?, error: NSError?) -> ()) {
+        
+        
+        GET("1.1/statuses/user_timeline.json", parameters: params, success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            //            println("home timeline: \(response)")
+            var statuses = Status.statusesWithArray(response as [NSDictionary])
+            completion(statuses: statuses, error: nil)
+            
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Error getting user timeline")
+                completion(statuses: nil, error: error)
+        })
+    }
+    
     
     // Posts Tweet, takes replyID argument
     func updateStatus(statusText: String, replyID: String?){
@@ -96,7 +126,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             var authURL = NSURL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken.token)")
             UIApplication.sharedApplication().openURL(authURL)
             }) {(error:NSError!) -> Void in
-                println("Failed to get request token")
+                println("Failed to get request token: \(error)")
                 self.loginCompletion?(user: nil, error: error)
         }
         
@@ -127,6 +157,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
                 self.loginCompletion?(user: nil, error: error)
         }
     }
+    
     
     
 

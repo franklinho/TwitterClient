@@ -9,6 +9,8 @@
 import UIKit
 
 class StatusTableViewCell: UITableViewCell {
+    
+    
 
     @IBOutlet weak var userNameLabel: UILabel!
 

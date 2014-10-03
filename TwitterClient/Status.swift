@@ -20,6 +20,7 @@ class Status: NSObject {
     var timeSinceTweet: String
     var timeStamp: String
     var statusID: String
+    var screenName: String
     
     
     init(dictionary: NSDictionary) {
@@ -29,7 +30,7 @@ class Status: NSObject {
         
         var user = dictionary["user"] as NSDictionary
         self.name = user["name"] as NSString
-        var screenName = user["screen_name"] as NSString
+        self.screenName = user["screen_name"] as NSString
         self.username = "@\(screenName)" as NSString
         self.profileImageURL = user["profile_image_url"] as NSString
         
