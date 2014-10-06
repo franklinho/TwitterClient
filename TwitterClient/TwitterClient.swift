@@ -44,6 +44,23 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
         })
     }
     
+    // Pulls mention timeline statuses
+    func mentionTimelineWithParams(params: NSDictionary?, completion: (statuses:[Status]?, error: NSError?) -> ()) {
+        
+        
+        GET("1.1/statuses/mentions_timeline.json", parameters: params, success: {(operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            //            println("home timeline: \(response)")
+            var statuses = Status.statusesWithArray(response as [NSDictionary])
+            completion(statuses: statuses, error: nil)
+            
+            }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                println("Error getting mentions timeline: \(error)")
+                completion(statuses: nil, error: error)
+        })
+    }
+    
+    
+    
     // Pulls user details
     func getUser(userName: String, completion: (user:User?, error: NSError?) -> ()) {
         
@@ -68,7 +85,7 @@ class TwitterClient: BDBOAuth1RequestOperationManager {
             completion(statuses: statuses, error: nil)
             
             }, failure: {(operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-                println("Error getting user timeline")
+                println("Error getting user timeline: \(error)")
                 completion(statuses: nil, error: error)
         })
     }

@@ -35,6 +35,7 @@ class User: NSObject {
         followingCount = dictionary["friends_count"] as Int
         tweetCount = dictionary["statuses_count"] as Int
         profileBackgroundURL = dictionary["profile_background_image_url"] as String
+        println("Profile background Image: \(profileBackgroundURL)")
     }
     
     // Logs user out.

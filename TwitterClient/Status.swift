@@ -43,7 +43,7 @@ class Status: NSObject {
         var numberOfMinutesDouble = secondsBetween/60 as Double
         var numberOfMinutes : Int = Int(numberOfMinutesDouble)
         
-        println("\(numberOfMinutes)")
+//        println("\(numberOfMinutes)")
         
         if numberOfMinutes < 60 {
             self.timeSinceTweet = "\(numberOfMinutes)m"

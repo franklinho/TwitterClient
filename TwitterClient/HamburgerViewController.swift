@@ -11,6 +11,7 @@ import UIKit
 class HamburgerViewController: UIViewController {
     
 
+    @IBOutlet var contentViewTapGestureRecognizer: UITapGestureRecognizer!
     
     var sb : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
     
@@ -18,12 +19,15 @@ class HamburgerViewController: UIViewController {
     
     @IBOutlet weak var userImageView: UIImageView!
     
+    @IBOutlet weak var mentionsButton: UIButton!
     @IBOutlet weak var userScreenNameLable: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var blueButton: UIButton!
     @IBOutlet weak var redButton: UIButton!
     @IBOutlet weak var centerConstraint: NSLayoutConstraint!
+    
+    var hamburgerShowing : Bool = false
     
     var activeViewController: UIViewController? {
         didSet(oldViewControllerOrNil){
@@ -45,22 +49,41 @@ class HamburgerViewController: UIViewController {
 
    
 
-    
 
-    @IBAction func didSwipe(sender: AnyObject) {
+    @IBAction func didSwipeLeft(sender: AnyObject) {
         if sender.state == .Ended {
             UIView.animateWithDuration(0.35, animations: {
-                self.centerConstraint.constant = -160
+                self.centerConstraint.constant = 0
                 self.view.layoutIfNeeded()
+                self.hamburgerShowing = false
             })
             
         }
     }
     
+
+    @IBAction func didSwipeRight(sender: AnyObject) {
+        
+        if sender.state == .Ended {
+            UIView.animateWithDuration(0.35, animations: {
+                self.centerConstraint.constant = -160
+                self.view.layoutIfNeeded()
+                self.hamburgerShowing = true
+            })
+            
+        }
+        
+    }
+    
     override func viewDidLoad() {
-        var statusVC : UIViewController = sb.instantiateViewControllerWithIdentifier("StatusesViewController") as UIViewController
-        var profileVC : ProfileViewController = sb.instantiateViewControllerWithIdentifier("ProfileViewController") as ProfileViewController
-        viewControllers = [statusVC,profileVC]
+        var statusVC : TwitterNavigationController = sb.instantiateViewControllerWithIdentifier("StatusesViewController") as TwitterNavigationController
+        statusVC.timelineStyle = "Home"
+        var profileVC : UINavigationController = sb.instantiateViewControllerWithIdentifier("ProfileViewController") as UINavigationController
+        var mentionsVC : TwitterNavigationController  = sb.instantiateViewControllerWithIdentifier("StatusesViewController") as TwitterNavigationController
+        mentionsVC.timelineStyle = "Mentions"
+
+        viewControllers = [statusVC,profileVC,mentionsVC]
+        
         
         
         self.centerConstraint.constant = 0
@@ -91,11 +114,12 @@ class HamburgerViewController: UIViewController {
     @IBAction func didTapButton(sender: UIButton) {
         if sender == redButton {
             self.activeViewController = viewControllers.first
-            println("Red Button")
+//            println("Red Button")
         } else if sender == blueButton{
-            println("\(viewControllers)")
+            self.activeViewController = viewControllers[1]
+//            println("Blue button")
+        } else if sender == mentionsButton{
             self.activeViewController = viewControllers.last
-            println("Blue button")
         } else {
             println("Unknown button")
         }
@@ -103,6 +127,7 @@ class HamburgerViewController: UIViewController {
         UIView.animateWithDuration(0.35, animations: {
                 self.centerConstraint.constant = 0
                 self.view.layoutIfNeeded()
+                self.hamburgerShowing = false
             })
     }
     

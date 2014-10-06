@@ -21,6 +21,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     
     var statuses: NSMutableArray = []
     
+    var timelineStyle : String!
+    
     // Indicates offset for infinite scrolling
     var currentMaxStatusID:String?
     
@@ -39,7 +41,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        
+        self.timelineStyle = (self.navigationController? as TwitterNavigationController).timelineStyle
 
         
         // Styles navigation bar
@@ -101,20 +103,33 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         }
         
         // Get home timeline tweets
-        TwitterClient.sharedInstance.homeTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
-            dispatch_async(dispatch_get_main_queue(),{
-                if (statuses != nil) {
-                    self.statuses.addObjectsFromArray(statuses!)
-                    println("Statuses: \(self.statuses)")
-                    println("Last Status ID: \((self.statuses[self.statuses.count-1] as Status).statusID)")
-                    self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
-                    self.refreshControl.endRefreshing()
-                    self.statusTableView.reloadData()
-                }
+        if(self.timelineStyle == "Home") {
+            TwitterClient.sharedInstance.homeTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
+                dispatch_async(dispatch_get_main_queue(),{
+                    if (statuses != nil) {
+                        self.statuses.addObjectsFromArray(statuses!)
+                        self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
+                        self.refreshControl.endRefreshing()
+                        self.statusTableView.reloadData()
+                    }
+                    
+                })
                 
             })
-            
-        })
+        } else if (self.timelineStyle == "Mentions"){
+            TwitterClient.sharedInstance.mentionTimelineWithParams(requestParams, completion: { (statuses, error) -> () in
+                dispatch_async(dispatch_get_main_queue(),{
+                    if (statuses != nil) {
+                        self.statuses.addObjectsFromArray(statuses!)
+                        self.currentMaxStatusID = (self.statuses[self.statuses.count-1] as Status).statusID
+                        self.refreshControl.endRefreshing()
+                        self.statusTableView.reloadData()
+                    }
+                    
+                })
+                
+            })
+        }
         //        let accountStore = ACAccountStore()
         //        let accountType = accountStore.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
         //        accountStore.requestAccessToAccountsWithType(accountType, options: nil) { (success, error) in
@@ -174,6 +189,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             var profileController: ProfileViewController = segue.destinationViewController as ProfileViewController
             var statusIndex = indexPath.row
             profileController.userName = (self.statuses[statusIndex] as Status).screenName
+            println("ProfileUsername: \(profileController.userName)")
 //
         }
     }
@@ -190,8 +206,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         var actualPosition :CGFloat = scrollView.contentOffset.y
         var contentHeight : CGFloat = scrollView.contentSize.height - 550
         
-        println("Actual Position: \(actualPosition), Content Height: \(contentHeight)")
-        if (actualPosition >= contentHeight) {
+//        println("Actual Position: \(actualPosition), Content Height: \(contentHeight)")
+        if (statuses.count > 0 && actualPosition >= contentHeight) {
             requestStatuses(self, maxStatusID: self.currentMaxStatusID)
             self.statusTableView.reloadData()
         }
