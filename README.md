@@ -42,3 +42,5 @@ Part 2
     * :white_large_square: Tap account to switch to
     * :white_large_square: Include a plus button to Add an Account
     * :white_large_square: Swipe to delete an account
+
+[![Hamburger Menu](https://github.com/franklinho/TwitterClient/blob/master/TwitterClient2.gif)]
