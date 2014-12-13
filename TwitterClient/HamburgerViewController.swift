@@ -47,10 +47,7 @@ class HamburgerViewController: UIViewController {
     }
     
 
-   
-
-
-    @IBAction func didSwipeLeft(sender: AnyObject) {
+    @IBAction func didSwipeLeft(sender: UISwipeGestureRecognizer) {
         if sender.state == .Ended {
             UIView.animateWithDuration(0.35, animations: {
                 self.centerConstraint.constant = 0
@@ -60,9 +57,10 @@ class HamburgerViewController: UIViewController {
             
         }
     }
+   
     
 
-    @IBAction func didSwipeRight(sender: AnyObject) {
+    @IBAction func didSwipeRight(sender: UISwipeGestureRecognizer) {
         
         if sender.state == .Ended {
             UIView.animateWithDuration(0.35, animations: {

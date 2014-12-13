@@ -39,7 +39,7 @@ class Status: NSObject {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "eee MMM dd HH:mm:ss ZZZZ yyyy"
         var createdTimeStamp : NSDate = dateFormatter.dateFromString(createdTimeStampString)!
-        var secondsBetween : NSTimeInterval = NSDate.date().timeIntervalSinceDate(createdTimeStamp)
+        var secondsBetween : NSTimeInterval = NSDate().timeIntervalSinceDate(createdTimeStamp)
         var numberOfMinutesDouble = secondsBetween/60 as Double
         var numberOfMinutes : Int = Int(numberOfMinutesDouble)
         
